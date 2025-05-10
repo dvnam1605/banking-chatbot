@@ -23,7 +23,6 @@ def prepare_banking_dataset(dataset):
     formatted_dataset = None
     
     if "instruction" in dataset.column_names and "response" in dataset.column_names:
-        print("Đã tìm thấy các trường instruction và response")
         formatted_dataset = dataset
     else:
         instruction_field = None
@@ -36,12 +35,8 @@ def prepare_banking_dataset(dataset):
                 if "**response" in dataset[0][field].lower():
                     response_field = field
         
-        if instruction_field and response_field:
-            print(f"Tìm thấy **instruction trong trường '{instruction_field}'")
-            print(f"Tìm thấy **response trong trường '{response_field}'")
-            
+        if instruction_field and response_field: 
             if instruction_field == response_field:
-                print("Instruction và response nằm trong cùng một trường, đang tách...")
                 
                 def extract_instruction_response(text):
                     parts = text.split("**response", 1)
@@ -81,7 +76,6 @@ def prepare_banking_dataset(dataset):
     return formatted_dataset
 
 def preprocess_data(examples, tokenizer, max_input_length=512, max_target_length=128):
-    """Tiền xử lý dữ liệu cho mô hình seq2seq"""
     
     inputs = ["banking inquiry: " + doc for doc in examples["instruction"]]
     targets = examples["response"]
